@@ -14,23 +14,25 @@ export const SinglePostPage = () => {
     dispatch(fetchSinglePost(id));
   }, [id, dispatch]);
   if (!post) {
-    return <div>loading</div>;
+    return <Container>loading</Container>;
   } else {
     console.log(post);
     const { host } = new URL(post.url);
     return (
       <Container>
-        <div className="mb-8 max-w-full">
-          <a className="text-lg" href={post.url} target="_blank" rel="noreferrer">
-            {post.title}
-          </a>{' '}
-          <small className="text-blue-900 dark:text-blue-400 hover:underline">
-            <a href={post.url} target="_blank" rel="noreferrer">
-              ({host})
-            </a>
-          </small>
+        <div className="w-2xl max-w-2xl">
+          <div className="mb-8">
+            <a className="text-lg" href={post.url} target="_blank" rel="noreferrer">
+              {post.title}
+            </a>{' '}
+            <small className="text-blue-900 dark:text-blue-400 hover:underline">
+              <a href={post.url} target="_blank" rel="noreferrer">
+                ({host})
+              </a>
+            </small>
+          </div>
+          <Comments postId={id} />
         </div>
-        <Comments postId={id} />
       </Container>
     );
   }
