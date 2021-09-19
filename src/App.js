@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, Switch } from 'react-router';
-import { NewsPage } from './NewsPage';
 import { Navbar } from './Navbar';
 import { SinglePostPage } from './pages/SinglePostPage';
+import { FeedPage } from './pages/FeedPage';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <Navbar />
       <div className="">
         <Switch>
-          <Route exact path="/" component={NewsPage} />
+          <Route exact path="/" component={FeedPage} />
           <Route path="/item/:id" component={SinglePostPage} />
         </Switch>
       </div>

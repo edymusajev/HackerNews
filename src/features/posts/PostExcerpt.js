@@ -1,0 +1,52 @@
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import React from 'react';
+
+import { AiOutlineHeart, AiOutlineMessage } from 'react-icons/ai';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { postsCleared } from './posts.slice';
+
+export const PostExcerpt = ({ post }) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const handleLink = () => {
+    dispatch(postsCleared());
+    history.push(`/item/${id}`);
+  };
+  dayjs.extend(relativeTime);
+  const url = post.url ? new URL(post.url) : null;
+  const id = post.id;
+  return (
+    <li className="mb-4 pb-4 border-b dark:border-gray-600">
+      <small className="text-gray-700 dark:text-gray-400">
+        {dayjs.unix(post.time).fromNow()} by <span className="underline">{post.by}</span>
+      </small>
+      <div className="">
+        <a className="text-lg hover:underline" href={post.url}>
+          {post.title}
+        </a>{' '}
+        {post.url && (
+          <small className="text-blue-900 dark:text-blue-400 hover:underline">
+            <a href={url.origin} target="_blank" rel="noreferrer">
+              ({url.hostname})
+            </a>
+          </small>
+        )}
+      </div>
+      <div className="flex mt-2">
+        <div>
+          <div className="flex items-center mr-4">
+            <AiOutlineHeart size="1.25rem" /> <span className="ml-1">{post.score}</span>
+          </div>
+        </div>
+        <div onClick={() => handleLink(post.id)} className="hover:underline cursor-pointer pb-0">
+          <div className="flex items-center">
+            <AiOutlineMessage size="1.25rem" />{' '}
+            <span className="ml-1">{post.descendants ? post.descendants : '0'}</span>
+          </div>
+        </div>
+      </div>
+    </li>
+  );
+};
