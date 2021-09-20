@@ -15,6 +15,6 @@ export const CommentsList = () => {
   if (!comments) {
     return <ul>Loading...</ul>;
   } else {
-    return <ul>{renderComments()}</ul>;
+    return <ul className="">{renderComments()}</ul>;
   }
 };

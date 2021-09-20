@@ -3,6 +3,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import React from 'react';
 
 import { AiOutlineHeart, AiOutlineMessage } from 'react-icons/ai';
+import { FiExternalLink } from 'react-icons/fi';
 import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { postsCleared } from './posts.slice';
@@ -28,8 +29,8 @@ export const PostExcerpt = ({ post }) => {
         </Link>{' '}
         {post.url && (
           <small className="text-blue-900 dark:text-blue-400 hover:underline">
-            <a href={post.url} target="_blank" rel="noreferrer">
-              ({url.hostname})
+            <a href={post.url} target="_blank" rel="noreferrer" className="flex items-center">
+              <span className="mr-1">({url.hostname})</span> <FiExternalLink />
             </a>
           </small>
         )}

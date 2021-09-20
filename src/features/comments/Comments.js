@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Container } from '../../Container';
 import { fetchComments, selectComments } from './comments.slice';
 import { CommentsList } from './CommentsList';
 
@@ -10,14 +11,10 @@ export const Comments = ({ postId }) => {
   useEffect(() => {
     dispatch(fetchComments(postId));
   }, [dispatch, postId]);
-  if (!comments) {
-    return <div>Loading...</div>;
-  } else {
-    return (
-      <div>
-        <p className="mb-4">{comments.length} Comments</p>
-        <CommentsList />
-      </div>
-    );
-  }
+  return (
+    <div className="">
+      <p className="mb-4">{comments ? comments.length : null} Comments</p>
+      {comments ? <CommentsList /> : <div>Loading</div>}
+    </div>
+  );
 };

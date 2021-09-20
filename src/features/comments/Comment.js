@@ -7,20 +7,16 @@ dayjs.extend(relativeTime);
 export const Comment = ({ comment }) => {
   const renderChildren = () => {
     if (comment.children) {
-      return comment.children.map((comment) => (
-        <div className="pl-4 border-l dark:border-gray-600" key={comment.id}>
-          <Comment comment={comment} />
-        </div>
-      ));
+      return comment.children.map((comment) => <Comment key={comment.id} comment={comment} />);
     }
   };
   return (
-    <div className="pb-8">
+    <div className="pb-8 dark:border-gray-600">
       <p className="">
         By <span className="underline">{comment.author}</span> |{' '}
         {dayjs(comment.created_at).fromNow()}
       </p>
-      <div>{parse(`${comment.text}`)}</div>
+      <div className="">{parse(`${comment.text}`)}</div>
       <ul className="mb-0">{renderChildren()}</ul>
     </div>
   );
