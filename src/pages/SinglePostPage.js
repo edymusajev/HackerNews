@@ -16,7 +16,6 @@ export const SinglePostPage = () => {
   if (!post) {
     return <Container>loading</Container>;
   } else {
-    console.log(post);
     const { host } = new URL(post.url);
     return (
       <Container>

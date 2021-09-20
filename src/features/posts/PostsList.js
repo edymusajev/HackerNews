@@ -15,6 +15,10 @@ import {
   setNextPage,
 } from './posts.slice';
 
+export const Loading = () => {
+  return <div className="h-12 flex items-center justify-center">Loading...</div>;
+};
+
 export const PostsList = () => {
   const dispatch = useDispatch();
   const ids = useSelector(selectIds);
@@ -61,7 +65,12 @@ export const PostsList = () => {
     <div>
       {posts && (
         <ul>
-          <InfiniteScroll dataLength={posts.length} next={loadMorePosts} hasMore={hasMorePages}>
+          <InfiniteScroll
+            dataLength={posts.length}
+            next={loadMorePosts}
+            hasMore={hasMorePages}
+            loader={<Loading />}
+          >
             {renderedPosts}
           </InfiniteScroll>{' '}
         </ul>

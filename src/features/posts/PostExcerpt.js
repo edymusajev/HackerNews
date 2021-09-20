@@ -4,7 +4,7 @@ import React from 'react';
 
 import { AiOutlineHeart, AiOutlineMessage } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { postsCleared } from './posts.slice';
 
 export const PostExcerpt = ({ post }) => {
@@ -23,12 +23,12 @@ export const PostExcerpt = ({ post }) => {
         {dayjs.unix(post.time).fromNow()} by <span className="underline">{post.by}</span>
       </small>
       <div className="">
-        <a className="text-lg hover:underline" href={post.url}>
+        <Link className="text-lg hover:underline" to={`items/${post.id}`}>
           {post.title}
-        </a>{' '}
+        </Link>{' '}
         {post.url && (
           <small className="text-blue-900 dark:text-blue-400 hover:underline">
-            <a href={url.origin} target="_blank" rel="noreferrer">
+            <a href={post.url} target="_blank" rel="noreferrer">
               ({url.hostname})
             </a>
           </small>
