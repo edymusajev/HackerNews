@@ -4,7 +4,6 @@
 
 /* hide scrollbar but allow scrolling */
 html {
-  background-color: #1f2937;
   -ms-overflow-style: none; /* for Internet Explorer, Edge */
   scrollbar-width: none; /* for Firefox */
   overflow-y: scroll;

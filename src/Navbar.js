@@ -33,7 +33,9 @@ export const Category = ({ text, type, selectedIcon, unselectedIcon }) => {
   };
   return (
     <div
-      className={`ml-4 cursor-pointer ${selectedType === type ? '' : 'text-gray-300'}`}
+      className={`ml-4 cursor-pointer ${
+        selectedType === type ? '' : 'text-gray-500 dark:text-gray-300'
+      }`}
       onClick={() => handleClick()}
     >
       <div className="inline-flex items-center">

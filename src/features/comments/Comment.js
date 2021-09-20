@@ -16,7 +16,7 @@ export const Comment = ({ comment }) => {
         By <span className="underline">{comment.author}</span> |{' '}
         {dayjs(comment.created_at).fromNow()}
       </p>
-      <div className="">{parse(`${comment.text}`)}</div>
+      <div className="overflow-hidden">{parse(`${comment.text}`)}</div>
       <ul className="mb-0">{renderChildren()}</ul>
     </div>
   );
