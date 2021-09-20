@@ -7,7 +7,6 @@ import {
   fetchIds,
   fetchMorePosts,
   fetchPosts,
-  postsCleared,
   selectIds,
   selectPosts,
   selectStartIndex,
@@ -52,14 +51,13 @@ export const PostsList = () => {
   const hasMorePages = () => {
     return startIndex < ids.length ? true : false;
   };
-
   const renderedPosts = posts
     ? posts.map((post) => (
         <React.Fragment key={nanoid()}>
           <PostExcerpt post={post} />
         </React.Fragment>
       ))
-    : 'gg';
+    : null;
 
   return (
     <div>
@@ -72,7 +70,7 @@ export const PostsList = () => {
             loader={<Loading />}
           >
             {renderedPosts}
-          </InfiniteScroll>{' '}
+          </InfiniteScroll>
         </ul>
       )}
     </div>

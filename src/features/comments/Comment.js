@@ -5,7 +5,6 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
 
 export const Comment = ({ comment }) => {
-  console.log(comment);
   const renderChildren = () => {
     if (comment.children) {
       return comment.children.map((comment) => (

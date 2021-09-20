@@ -43,6 +43,7 @@ const postsSlice = createSlice({
     ids: null,
     startIndex: 0,
     posts: null,
+    singlePost: null,
     type: 'topstories',
   },
   reducers: {
@@ -63,7 +64,7 @@ const postsSlice = createSlice({
       state.ids = action.payload;
     },
     [fetchSinglePost.fulfilled]: (state, action) => {
-      state.posts = action.payload;
+      state.singlePost = action.payload;
     },
     [fetchIds.fulfilled]: (state, action) => {
       state.ids = action.payload;
@@ -81,7 +82,7 @@ export const { typeChanged, setNextPage, postsCleared } = postsSlice.actions;
 
 export const selectStartIndex = (state) => state.posts.startIndex;
 export const selectIds = (state) => state.posts.ids;
-export const selectSinglePost = (state) => state.posts.posts;
+export const selectSinglePost = (state) => state.posts.singlePost;
 export const selectPosts = (state) => state.posts.posts;
 export const selectType = (state) => state.posts.type;
 
