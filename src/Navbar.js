@@ -18,11 +18,16 @@ import {
 import { RiQuestionAnswerLine, RiQuestionAnswerFill } from 'react-icons/ri';
 
 export const Category = ({ text, type, selectedIcon, unselectedIcon }) => {
+  const location = useLocation();
+  const history = useHistory();
   const dispatch = useDispatch();
   const selectedType = useSelector(selectType);
   const handleClick = () => {
-    console.log('help');
     if (type !== selectedType) {
+      if (location.pathname !== '/') {
+        dispatch(postsCleared());
+        history.push('/');
+      }
       dispatch(typeChanged(type));
     }
   };

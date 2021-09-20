@@ -16,7 +16,7 @@ export const SinglePostPage = () => {
   if (!post) {
     return <Container>loading</Container>;
   } else {
-    const { host } = new URL(post.url);
+    const { host } = post.url ? new URL(post.url) : { host: null };
     return (
       <Container>
         <div className="w-2xl max-w-2xl">
@@ -25,9 +25,11 @@ export const SinglePostPage = () => {
               {post.title}
             </a>{' '}
             <small className="text-blue-900 dark:text-blue-400 hover:underline">
-              <a href={post.url} target="_blank" rel="noreferrer">
-                ({host})
-              </a>
+              {host && (
+                <a href={post.url} target="_blank" rel="noreferrer">
+                  ({host})
+                </a>
+              )}
             </small>
           </div>
           <Comments postId={id} />
