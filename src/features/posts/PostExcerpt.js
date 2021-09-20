@@ -12,7 +12,7 @@ export const PostExcerpt = ({ post }) => {
   const dispatch = useDispatch();
   const handleLink = () => {
     dispatch(postsCleared());
-    history.push(`/item/${id}`);
+    history.push(`/posts/${id}`);
   };
   dayjs.extend(relativeTime);
   const url = post.url ? new URL(post.url) : null;
@@ -23,7 +23,7 @@ export const PostExcerpt = ({ post }) => {
         {dayjs.unix(post.time).fromNow()} by <span className="underline">{post.by}</span>
       </small>
       <div className="">
-        <Link className="text-lg hover:underline" to={`items/${post.id}`}>
+        <Link className="text-lg hover:underline" to={`posts/${post.id}`}>
           {post.title}
         </Link>{' '}
         {post.url && (

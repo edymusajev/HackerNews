@@ -11,7 +11,7 @@ function App() {
       <div className="">
         <Switch>
           <Route exact path="/" component={FeedPage} />
-          <Route path="/item/:id" component={SinglePostPage} />
+          <Route path="/posts/:id" component={SinglePostPage} />
         </Switch>
       </div>
     </div>
