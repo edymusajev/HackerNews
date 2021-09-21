@@ -9,15 +9,23 @@ export const fetchComments = createAsyncThunk('comments/fetchComments', async (p
 
 const commentsSlice = createSlice({
   name: 'comments',
-  initialState: null,
+  initialState: {
+    status: 'idle',
+    comments: null,
+  },
   reducers: {},
   extraReducers: {
+    [fetchComments.pending]: (state, action) => {
+      state.status = 'pending';
+    },
     [fetchComments.fulfilled]: (state, action) => {
-      return action.payload;
+      state.comments = action.payload;
+      state.status = 'fulfilled';
     },
   },
 });
 
-export const selectComments = (state) => state.comments;
+export const selectStatus = (state) => state.comments.status;
+export const selectComments = (state) => state.comments.comments;
 
 export default commentsSlice.reducer;

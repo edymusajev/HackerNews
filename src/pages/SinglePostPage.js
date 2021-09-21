@@ -12,6 +12,10 @@ export const SinglePostPage = () => {
   const post = useSelector(selectSinglePost);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     dispatch(fetchSinglePost(id));
   }, [id, dispatch]);
   if (!post) {

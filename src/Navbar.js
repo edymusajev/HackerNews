@@ -4,8 +4,6 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 import { postsCleared, selectType, typeChanged } from './features/posts/posts.slice';
 import { FaHackerNewsSquare } from 'react-icons/fa';
 import {
-  AiOutlineHeart,
-  AiOutlineMessage,
   AiOutlineFire,
   AiFillFire,
   AiOutlineCrown,

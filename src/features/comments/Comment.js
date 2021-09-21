@@ -7,14 +7,20 @@ dayjs.extend(relativeTime);
 export const Comment = ({ comment }) => {
   const renderChildren = () => {
     if (comment.children) {
-      return comment.children.map((comment) => <Comment key={comment.id} comment={comment} />);
+      return comment.children.map((comment) => (
+        <div className="pl-4 border-l dark:border-gray-600" key={comment.id}>
+          <Comment comment={comment} />
+        </div>
+      ));
     }
   };
   return (
-    <div className="pb-8 dark:border-gray-600">
+    <div className="py-4 dark:border-gray-600">
       <p className="">
-        By <span className="underline">{comment.author}</span> |{' '}
-        {dayjs(comment.created_at).fromNow()}
+        <span className="underline">{comment.author}</span>{' '}
+        <span className="dark:text-gray-400 text-gray-700">
+          | {dayjs(comment.created_at).fromNow()}
+        </span>
       </p>
       <div className="overflow-hidden">{parse(`${comment.text}`)}</div>
       <ul className="mb-0">{renderChildren()}</ul>

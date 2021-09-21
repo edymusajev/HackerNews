@@ -6,15 +6,13 @@ import { selectComments } from './comments.slice';
 export const CommentsList = () => {
   const comments = useSelector(selectComments);
   const renderComments = () => {
-    return comments.map((comment) => (
-      <React.Fragment key={comment.id}>
-        <Comment comment={comment} />
-      </React.Fragment>
-    ));
+    return comments.map((comment) =>
+      comment.text !== null ? (
+        <React.Fragment key={comment.id}>
+          <Comment comment={comment} />
+        </React.Fragment>
+      ) : null
+    );
   };
-  if (!comments) {
-    return <ul>Loading...</ul>;
-  } else {
-    return <ul className="">{renderComments()}</ul>;
-  }
+  return <ul className="">{renderComments()}</ul>;
 };
