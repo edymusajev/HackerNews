@@ -9,6 +9,7 @@ import {
   selectSinglePost,
   selectSinglePostStatus,
 } from '../features/posts/posts.slice';
+import parse from 'html-react-parser';
 
 const SinglePostPage = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const SinglePostPage = () => {
               <a className="text-xl" href={post.url} target="_blank" rel="noreferrer">
                 {post.title}
               </a>{' '}
+              {post.text ? <p>{parse(post.text)}</p> : null}
               <small className="text-blue-900 dark:text-blue-400 hover:underline">
                 {host && (
                   <a href={post.url} target="_blank" rel="noreferrer">
