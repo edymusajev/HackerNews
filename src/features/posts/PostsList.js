@@ -9,17 +9,19 @@ import {
   fetchPosts,
   selectIds,
   selectPosts,
+  selectPostsStatus,
   selectStartIndex,
   selectType,
   setNextPage,
 } from './posts.slice';
 
-export const Loading = () => {
+export const Loader = () => {
   return <div className="h-12 flex items-center justify-center">Loading...</div>;
 };
 
-export const PostsList = () => {
+const PostsList = () => {
   const dispatch = useDispatch();
+  const postsStatus = useSelector(selectPostsStatus);
   const ids = useSelector(selectIds);
   const posts = useSelector(selectPosts);
   const startIndex = useSelector(selectStartIndex);
@@ -28,51 +30,43 @@ export const PostsList = () => {
   //   initial load
   useEffect(() => {
     dispatch(fetchIds(type));
-  }, [dispatch, type]);
-
-  // after receiving the id array fetch posts
-  useEffect(() => {
-    if (ids) {
-      dispatch(fetchPosts());
-    }
-  }, [ids, dispatch]);
-
-  // fetch more posts
-  useEffect(() => {
-    if (startIndex > 0) {
-      dispatch(fetchMorePosts());
-    }
-  }, [startIndex, dispatch]);
+    dispatch(fetchPosts(type));
+  }, [type, dispatch]);
 
   const loadMorePosts = () => {
     dispatch(setNextPage());
+    dispatch(fetchMorePosts());
   };
 
   const hasMorePages = () => {
     return startIndex < ids.length ? true : false;
   };
-  const renderedPosts = posts
-    ? posts.map((post) => (
+
+  const renderFeed = () => {
+    if (postsStatus === 'fulfilled' && posts) {
+      const renderedPosts = posts.map((post) => (
         <React.Fragment key={nanoid()}>
           <PostExcerpt post={post} />
         </React.Fragment>
-      ))
-    : null;
-
-  return (
-    <div>
-      {posts && (
+      ));
+      return (
         <ul>
           <InfiniteScroll
             dataLength={posts.length}
             next={loadMorePosts}
             hasMore={hasMorePages}
-            loader={<Loading />}
+            loader={<Loader />}
           >
             {renderedPosts}
           </InfiniteScroll>
         </ul>
-      )}
-    </div>
-  );
+      );
+    } else {
+      return <div className="flex justify-center h-screen pt-8">Loading...</div>;
+    }
+  };
+
+  return <>{renderFeed()}</>;
 };
+
+export default PostsList;

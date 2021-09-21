@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export const fetchComments = createAsyncThunk('comments/fetchComments', async (postId) => {
-  console.log(postId);
   const response = await axios.get(`https://hn.algolia.com/api/v1/items/${postId}`);
   return response.data.children;
 });

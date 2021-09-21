@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { postsCleared, selectType, typeChanged } from './features/posts/posts.slice';
+import { postsCleared, resetIndex, selectType, typeChanged } from './features/posts/posts.slice';
 import { FaHackerNewsSquare } from 'react-icons/fa';
 import {
   AiOutlineFire,
@@ -13,6 +13,8 @@ import {
   AiFillCompass,
   AiOutlineCompass,
 } from 'react-icons/ai';
+
+import { RiMoonClearLine, RiMoonClearFill } from 'react-icons/ri';
 import { RiQuestionAnswerLine, RiQuestionAnswerFill } from 'react-icons/ri';
 
 export const Category = ({ text, type, selectedIcon, unselectedIcon }) => {
@@ -24,6 +26,7 @@ export const Category = ({ text, type, selectedIcon, unselectedIcon }) => {
     if (type !== selectedType) {
       if (location.pathname !== '/') {
         dispatch(postsCleared());
+        dispatch(resetIndex());
         history.push('/');
       }
       dispatch(typeChanged(type));
@@ -31,13 +34,15 @@ export const Category = ({ text, type, selectedIcon, unselectedIcon }) => {
   };
   return (
     <div
-      className={`ml-4 cursor-pointer ${
+      className={`mr-4 cursor-pointer ${
         selectedType === type ? '' : 'text-gray-500 dark:text-gray-300'
       }`}
       onClick={() => handleClick()}
     >
       <div className="inline-flex items-center">
-        {selectedType === type ? selectedIcon : unselectedIcon}
+        <span style={selectedType === type ? { color: '#fa6630' } : null}>
+          {selectedType === type ? selectedIcon : unselectedIcon}
+        </span>
         <span className="ml-1">{text}</span>{' '}
       </div>
     </div>
@@ -81,6 +86,7 @@ export const CategoryList = () => {
 };
 
 export const Navbar = () => {
+  const [darkModeEnabled, setDarkmodeEnabled] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
@@ -92,11 +98,28 @@ export const Navbar = () => {
     dispatch(typeChanged('topstories'));
     history.push('/');
   };
+  const toggleDarkmode = () => {
+    setDarkmodeEnabled(!darkModeEnabled);
+    const html = document.querySelector('html');
+    html.querySelector('.dark')
+      ? document.body.classList.remove('dark')
+      : document.body.classList.add('dark');
+  };
   return (
     <div className="border-b h-12 mb-4 px-4 sm:px-4 md:px-12 lg:px-24 flex items-center justify-between">
-      <div onClick={handleLink} className="text-xl font-bold cursor-pointer flex items-center">
-        <FaHackerNewsSquare size="2rem" />
-        <span className="ml-2 hidden sm:inline">HackerNews</span>
+      <div className=" flex items-center justify-between w-full">
+        <div onClick={handleLink} className="flex items-center cursor-pointer">
+          <FaHackerNewsSquare size="2rem" color="#fa6730" />
+          <span className="ml-2 hidden sm:inline text-xl font-bold cursor-pointer">HackerNews</span>
+        </div>
+
+        <p className="cursor-pointer " onClick={toggleDarkmode}>
+          {darkModeEnabled ? (
+            <RiMoonClearFill size="1.5rem" color="#fa6630" />
+          ) : (
+            <RiMoonClearLine size="1.5rem" />
+          )}
+        </p>
       </div>
     </div>
   );

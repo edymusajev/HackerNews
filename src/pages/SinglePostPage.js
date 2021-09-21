@@ -4,12 +4,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { Container } from '../Container';
 import { Comments } from '../features/comments/Comments';
-import { fetchSinglePost, selectSinglePost } from '../features/posts/posts.slice';
+import {
+  fetchSinglePost,
+  selectSinglePost,
+  selectSinglePostStatus,
+} from '../features/posts/posts.slice';
 
-export const SinglePostPage = () => {
+const SinglePostPage = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const post = useSelector(selectSinglePost);
+  const singlePostStatus = useSelector(selectSinglePostStatus);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -18,7 +23,7 @@ export const SinglePostPage = () => {
   useEffect(() => {
     dispatch(fetchSinglePost(id));
   }, [id, dispatch]);
-  if (!post) {
+  if (singlePostStatus !== 'fulfilled' && !post) {
     return <Container>loading</Container>;
   } else {
     const { host } = post.url ? new URL(post.url) : { host: null };
@@ -27,7 +32,8 @@ export const SinglePostPage = () => {
         <Container>
           <div className="w-2xl max-w-2xl">
             <div className="mb-8">
-              <a className="text-lg" href={post.url} target="_blank" rel="noreferrer">
+              <div>{post.by}</div>
+              <a className="text-xl" href={post.url} target="_blank" rel="noreferrer">
                 {post.title}
               </a>{' '}
               <small className="text-blue-900 dark:text-blue-400 hover:underline">
@@ -45,3 +51,5 @@ export const SinglePostPage = () => {
     );
   }
 };
+
+export default SinglePostPage;

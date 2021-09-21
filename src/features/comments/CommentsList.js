@@ -7,7 +7,7 @@ export const CommentsList = () => {
   const comments = useSelector(selectComments);
   const renderComments = () => {
     return comments.map((comment) =>
-      comment.text !== null ? (
+      comment.text !== 'null' ? (
         <React.Fragment key={comment.id}>
           <Comment comment={comment} />
         </React.Fragment>

@@ -1,3 +1,4 @@
+// @ts-check
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -11,35 +12,41 @@ export const fetchSinglePost = createAsyncThunk('posts/fetchSinglePost', async (
   return response.data;
 });
 
-export const fetchPosts = createAsyncThunk('posts/fetchPosts', async (arg, { getState }) => {
-  const state = getState();
-  const items = state.posts.ids.slice(state.posts.startIndex, state.posts.startIndex + 30);
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async (type, { getState }) => {
+  const { posts } = getState();
+  const allPostIds = await axios.get(`https://hacker-news.firebaseio.com/v0/${type}.json`);
+  const postIds = allPostIds.data.slice(posts.startIndex, posts.startIndex + 30);
 
-  const posts = await axios.all(
-    items.map(async (id) => {
+  const response = await axios.all(
+    postIds.map(async (id) => {
       const post = await axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json?`);
-      return post.data;
+      if (post.data) {
+        return post.data;
+      }
     })
   );
-  return posts;
+  return response;
 });
 
 export const fetchMorePosts = createAsyncThunk('news/fetchMorePosts', async (arg, { getState }) => {
-  const state = getState();
-  const items = state.posts.ids.slice(state.posts.startIndex, state.posts.startIndex + 30);
+  const { posts } = getState();
+  const items = posts.ids.slice(posts.startIndex, posts.startIndex + 30);
 
-  const posts = await axios.all(
+  const response = await axios.all(
     items.map(async (id) => {
       const item = await axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json?`);
       return item.data;
     })
   );
-  return posts;
+  return response;
 });
 
 const postsSlice = createSlice({
   name: 'posts',
   initialState: {
+    idStatus: 'idle',
+    postsStatus: 'idle',
+    singlePostStatus: 'idle',
     ids: null,
     startIndex: 0,
     posts: null,
@@ -58,28 +65,44 @@ const postsSlice = createSlice({
     postsCleared(state, action) {
       state.posts = null;
     },
+    resetIndex(state, action) {
+      state.startIndex = 0;
+    },
   },
-  extraReducers: {
-    [fetchIds.fulfilled]: (state, action) => {
-      state.ids = action.payload;
-    },
-    [fetchSinglePost.fulfilled]: (state, action) => {
-      state.singlePost = action.payload;
-    },
-    [fetchIds.fulfilled]: (state, action) => {
-      state.ids = action.payload;
-    },
-    [fetchPosts.fulfilled]: (state, action) => {
-      state.posts = action.payload;
-    },
-    [fetchMorePosts.fulfilled]: (state, action) => {
-      state.posts.push(...action.payload);
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchIds.pending, (state, action) => {
+        state.idStatus = 'pending';
+      })
+      .addCase(fetchIds.fulfilled, (state, action) => {
+        state.idStatus = 'fulfilled';
+        state.ids = action.payload;
+      })
+      .addCase(fetchSinglePost.pending, (state, action) => {
+        state.singlePostStatus = 'pending';
+      })
+      .addCase(fetchSinglePost.fulfilled, (state, action) => {
+        state.singlePostStatus = 'fulfilled';
+        state.singlePost = action.payload;
+      })
+      .addCase(fetchPosts.pending, (state, action) => {
+        state.postsStatus = 'pending';
+      })
+      .addCase(fetchPosts.fulfilled, (state, action) => {
+        state.postsStatus = 'fulfilled';
+        state.posts = action.payload;
+      })
+      .addCase(fetchMorePosts.fulfilled, (state, action) => {
+        state.posts.push(...action.payload);
+      });
   },
 });
 
-export const { typeChanged, setNextPage, postsCleared } = postsSlice.actions;
+export const { typeChanged, setNextPage, postsCleared, resetIndex } = postsSlice.actions;
 
+export const selectIdStatus = (state) => state.posts.idStatus;
+export const selectSinglePostStatus = (state) => state.posts.singlePostStatus;
+export const selectPostsStatus = (state) => state.posts.postsStatus;
 export const selectStartIndex = (state) => state.posts.startIndex;
 export const selectIds = (state) => state.posts.ids;
 export const selectSinglePost = (state) => state.posts.singlePost;
