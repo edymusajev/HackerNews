@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { postsCleared, resetIndex, selectType, typeChanged } from './features/posts/posts.slice';
@@ -86,7 +86,7 @@ export const CategoryList = () => {
 };
 
 export const Navbar = () => {
-  const [darkModeEnabled, setDarkmodeEnabled] = useState(false);
+  const [darkModeEnabled, setDarkmodeEnabled] = useState(localStorage.theme === 'dark');
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
@@ -99,12 +99,18 @@ export const Navbar = () => {
     history.push('/');
   };
   const toggleDarkmode = () => {
-    setDarkmodeEnabled(!darkModeEnabled);
     const html = document.querySelector('html');
-    html.querySelector('.dark')
-      ? document.body.classList.remove('dark')
-      : document.body.classList.add('dark');
+    if (localStorage.theme === 'dark') {
+      setDarkmodeEnabled(false);
+      html.classList.remove('dark');
+      localStorage.theme = null;
+    } else {
+      setDarkmodeEnabled(true);
+      html.classList.add('dark');
+      localStorage.theme = 'dark';
+    }
   };
+
   return (
     <div className="border-b h-12 mb-4 px-4 sm:px-4 md:px-12 lg:px-24 flex items-center justify-between">
       <div className=" flex items-center justify-between w-full">
@@ -115,9 +121,9 @@ export const Navbar = () => {
 
         <p className="cursor-pointer " onClick={toggleDarkmode}>
           {darkModeEnabled ? (
-            <RiMoonClearFill size="1.5rem" color="#fa6630" />
-          ) : (
             <RiMoonClearLine size="1.5rem" />
+          ) : (
+            <RiMoonClearFill size="1.5rem" color="#fa6630" />
           )}
         </p>
       </div>
