@@ -4,7 +4,11 @@ import { Container } from '../../Container';
 import { fetchComments, selectComments, selectStatus } from './comments.slice';
 import { CommentsList } from './CommentsList';
 
-export const Comments = ({ postId }) => {
+interface Props {
+  postId: number;
+}
+
+export const Comments = ({ postId }: Props) => {
   const dispatch = useDispatch();
   const comments = useSelector(selectComments);
   const status = useSelector(selectStatus);

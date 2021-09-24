@@ -27,6 +27,7 @@ export const PostExcerpt = ({ post }) => {
         <Link className="text-lg hover:underline" to={`posts/${post.id}`}>
           {post.title}
         </Link>{' '}
+        {/* <img src={DOMParser(post.url) } /> */}
         {post.url && (
           <small className="text-blue-900 dark:text-blue-400 hover:underline">
             <a href={post.url} target="_blank" rel="noreferrer" className="flex items-center">
